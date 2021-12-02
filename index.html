@@ -772,22 +772,76 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="../assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <!-- <script src="../assets/plugins/bootstrap/js/popper.min.js"></script> -->
-    <!-- <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="../assets/plugins/bootstrap/js/popper.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
     <!--! Propio Javascript -->
     <script src="index.js"></script>
     <script src="./main/js/ganantia/modal-image.js"></script>
     <script src="../assets/plugins/wizard/jquery.steps.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-steps/1.1.0/jquery.steps.min.js" integrity="sha512-bE0ncA3DKWmKaF3w5hQjCq7ErHFiPdH2IGjXRyXXZSOokbimtUuufhgeDPeQPs51AI4XsqDZUK7qvrPZ5xboZg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
-    <!-- <script src="../assets/plugins/wizard/jquery.validate.min.js"></script> -->
+    <script src="../assets/plugins/wizard/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Sweet-Alert  -->
     <script src="../assets/plugins/sweetalert/sweetalert.min.js"></script>
     <!--  WIZARD STEPS -->
-    <script src="../assets/plugins/wizard/steps.js"></script>
-    <!-- ============================================================== -->
-    <!-- DropZone -->
-    <!-- <script src="../assets/plugins/dropzone-master/dist/dropzone.js"></script> -->
+    <!-- <script src="../assets/plugins/wizard/steps.js"></script> -->
+    <script>
+        $(".tab-wizard").steps({
+    headerTag: "h6"
+    , bodyTag: "section"
+    , transitionEffect: "fade"
+    , titleTemplate: '<span class="step">#index#</span> #title#'
+    , labels: {
+        finish: "Finalizar"
+    }
+    , onFinished: function (event, currentIndex) {
+       swal("Información enviada con éxito!");
+            
+    }
+});
+
+
+var form = $(".validation-wizard").show();
+
+$(".validation-wizard").steps({
+    headerTag: "h6"
+    , bodyTag: "section"
+    , transitionEffect: "fade"
+    , titleTemplate: '<span class="step">#index#</span> #title#'
+    , labels: {
+        finish: "Finalizar"
+    }
+    , onStepChanging: function (event, currentIndex, newIndex) {
+        return currentIndex > newIndex || !(3 === newIndex && Number($("#age-2").val()) < 18) && (currentIndex < newIndex && (form.find(".body:eq(" + newIndex + ") label.error").remove(), form.find(".body:eq(" + newIndex + ") .error").removeClass("error")), form.validate().settings.ignore = ":disabled,:hidden", form.valid())
+    }
+    , onFinishing: function (event, currentIndex) {
+        return form.validate().settings.ignore = ":disabled", form.valid()
+    }
+    , onFinished: function (event, currentIndex) {
+         swal("Información enviada con éxito!");
+    }
+}), $(".validation-wizard").validate({
+    ignore: "input[type=hidden]"
+    , errorClass: "text-danger"
+    , successClass: "text-success"
+    , highlight: function (element, errorClass) {
+        $(element).removeClass(errorClass)
+    }
+    , unhighlight: function (element, errorClass) {
+        $(element).removeClass(errorClass)
+    }
+    , errorPlacement: function (error, element) {
+        error.insertAfter(element)
+    }
+    , rules: {
+        email: {
+            email: !0
+        }
+    }
+})
+    </script>
+
+    
 </body>
 
 </html>
